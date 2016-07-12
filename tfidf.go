@@ -9,7 +9,7 @@ import (
 	"github.com/lytics/multibayes"
 )
 
-// Structs
+// Structs and types
 
 type weightingScheme int
 
@@ -57,7 +57,7 @@ var (
 // find its way into the output list in its stemmed form.
 //
 // This function was heavily inspired by Allison Morgan's
-// 'AddDocument' function from here 'tfidf' package:
+// 'AddDocument' function from heir 'tfidf' package:
 // https://github.com/allisonmorgan/tfidf/blob/master/tfidf.go#L36
 func TokenizeDocument(document string) []string {
 
@@ -125,7 +125,6 @@ func TermFrequency(term string, document []string, weighting weightingScheme) fl
 	// Apply supplied weighting scheme.
 	switch weighting {
 	case TermWeightingLog:
-
 		if frequency != 0.0 {
 			// Apply log normalization.
 			frequency = 1.0 + math.Log(frequency)
@@ -174,6 +173,7 @@ func InverseDocumentFrequency(term string, stem bool, documents [][]string, weig
 
 	switch weighting {
 	case InvDocWeightingLog:
+		// Apply log on quotient.
 		idf = math.Log(float64(numDocs) / numDocsWithTerm)
 	}
 
