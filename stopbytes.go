@@ -2,7 +2,7 @@
 // https://github.com/lytics/multibayes/blob/master/stopbytes.go
 // Please refer to lytics' multibayes package for
 // further information and credit.
-package gotfidf
+package tfidf
 
 var (
 	stopbytes = [][]byte{

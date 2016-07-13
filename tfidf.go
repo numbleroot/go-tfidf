@@ -1,7 +1,8 @@
-package gotfidf
+package tfidf
 
 import (
 	"bytes"
+	"fmt"
 	"math"
 	"strings"
 
@@ -100,24 +101,26 @@ func TokenizeDocument(document string) []string {
 
 // This function calculates the number of occurencies of a given
 // term in a given document. Based on the specified weighting scheme,
-// the result value will be in a specific form.
-// This functions expects a term, stems it and looks up its frequency
+// the result value will be in a specific form. This functions
+// expects a term, possibly stems it and looks up its frequency
 // in an already tokenized document.
-func TermFrequency(term string, document []string, weighting weightingScheme) float64 {
+func TermFrequency(term string, stem bool, document []string, weighting weightingScheme) float64 {
 
 	// Set frequency to 0 initially.
 	var frequency float64
 	frequency = 0.0
 
-	// Stem input term.
-	termStemmed := porterstemmer.StemString(term)
+	if stem {
+		// Stem input term.
+		term = porterstemmer.StemString(term)
+	}
 
 	// Iterate over tokens in document.
 	for _, token := range document {
 
 		// If we find the term in the tokens,
 		// increment frequency counter.
-		if termStemmed == token {
+		if term == token {
 			frequency += 1.0
 		}
 	}
@@ -132,6 +135,40 @@ func TermFrequency(term string, document []string, weighting weightingScheme) fl
 	}
 
 	return frequency
+}
+
+// This function takes in a compareDocument for which it will
+// return the frequency of tokens in it. The number and order of
+// tokens will be obtained by the given documents corpora.
+// Note that compareDoc usually is in the corpora and both lists
+// contain already tokenized elements.
+func TermFrequencies(compareDoc []string, documents [][]string) []float64 {
+
+	fmt.Printf("documents: %v\n", documents)
+
+	// Initialize result frequency vector and appearance map.
+	frequencies := make([]float64, 0)
+	appearance := make(map[string]bool)
+
+	// Range over all documents.
+	for _, document := range documents {
+
+		// Range over all tokens in current document.
+		for _, token := range document {
+
+			// Check if we already considered this token.
+			if exists := appearance[token]; !exists {
+
+				// Add the frequency of the new token in compareDoc to vector.
+				frequencies = append(frequencies, TermFrequency(token, false, compareDoc, TermWeightingRaw))
+
+				// Set visited value for this token to true.
+				appearance[token] = true
+			}
+		}
+	}
+
+	return frequencies
 }
 
 // Takes in a term, possibly stems it and counts its appearance
