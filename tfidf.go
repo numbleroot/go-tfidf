@@ -2,7 +2,6 @@ package tfidf
 
 import (
 	"bytes"
-	"fmt"
 	"math"
 	"strings"
 
@@ -143,8 +142,6 @@ func TermFrequency(term string, stem bool, document []string, weighting weightin
 // Note that compareDoc usually is in the corpora and both lists
 // contain already tokenized elements.
 func TermFrequencies(compareDoc []string, documents [][]string) []float64 {
-
-	fmt.Printf("documents: %v\n", documents)
 
 	// Initialize result frequency vector and appearance map.
 	frequencies := make([]float64, 0)
