@@ -57,7 +57,7 @@ var (
 // find its way into the output list in its stemmed form.
 //
 // This function was heavily inspired by Allison Morgan's
-// 'AddDocument' function from heir 'tfidf' package:
+// 'AddDocument' function from her 'tfidf' package:
 // https://github.com/allisonmorgan/tfidf/blob/master/tfidf.go#L36
 func TokenizeDocument(document string) []string {
 
